@@ -53,12 +53,12 @@ npm install
 #### `.env` for Backend
 
 ```env
-GOOGLE_CLIENT_ID=<your-client-id>
-GOOGLE_CLIENT_SECRET=<your-client-secret>
-JWT_SECRET=<your-jwt-secret>
-GOOGLE_APPLICATION_CREDENTIALS=./gcs-key.json
-GCS_BUCKET_NAME=<your-bucket-name>
 PORT=5001
+GOOGLE_CLIENT_ID=323311732198-jkaf3obtq0f2gsdu71pb4pv453lcvhja.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+JWT_SECRET=mysecret123
+GOOGLE_APPLICATION_CREDENTIALS=./service-account.json
+GCS_BUCKET_NAME=image-processing-poornesh
 ```
 
 #### `.env` for Frontend
@@ -113,7 +113,7 @@ const sharp = require('sharp');
 
 ### Environment Vars (Cloud Function):
 
-- `SOCKET_IO_SERVER_URL=http://your-backend-url`
+- `SOCKET_IO_SERVER_URL=http://localhost:5001`
 - `CLOUD_FUNCTION_JWT=cloud-function-secret`
 
 ---
@@ -141,7 +141,7 @@ const sharp = require('sharp');
 
 ---
 
-## ✅ Project Status
+## Project Status
 
 ### Level 1: MVP – ✅ Completed
 - Google OAuth flow works
@@ -165,6 +165,3 @@ const sharp = require('sharp');
 
 ---
 
-## 📄 License
-
-MIT
