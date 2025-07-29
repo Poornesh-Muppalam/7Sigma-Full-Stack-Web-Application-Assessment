@@ -1,0 +1,19 @@
+{
+  "name": "gcs-function",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google-cloud/secret-manager": "^6.1.0",
+    "@google-cloud/storage": "^7.16.0",
+    "jsonwebtoken": "^9.0.2",
+    "sharp": "^0.34.3",
+    "socket.io-client": "^4.8.1"
+  }
+}
