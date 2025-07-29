@@ -1,71 +1,170 @@
-# 7Sigma-Full-Stack-Web-Application-Assessment
+# Full-Stack Image Processing App
 
-A full-stack image processing application built with Google OAuth2, image uploads to Google Cloud Storage, real-time status updates via WebSockets, and serverless image processing via Cloud Functions.
+## 🌐 Project Overview
 
----
-
-# Features
-
-- Google OAuth2 authentication (frontend + backend)
-- Secure image uploads to Google Cloud Storage
-- Cloud Function triggers image processing on upload
-- Real-time status updates via WebSockets (Socket.IO)
-- JWT-based protected API routes
-- Typed backend using Fastify + OpenAPI (In progress)
-- Modern frontend using Vite + React + shadcn/ui
+This is a full-stack web application that allows users to:
+- Log in using Google OAuth2
+- Upload images securely to Google Cloud Storage
+- Trigger automated image processing via Cloud Functions (thumbnail generation using `sharp`)
+- Get real-time processing updates via WebSockets
+- View upload/processing status live in the dashboard
 
 ---
 
-# Tech Stack
+## ⚙️ Tech Stack
 
-| Frontend      | Backend     | Cloud / Tools           |
-|---------------|-------------|--------------------------|
-| React + Vite  | Fastify     | Google Cloud Storage     |
-| shadcn/ui     | OpenAPI     | Google Cloud Functions   |
-| JWT + Axios   | TypeScript  | Google Secret Manager    |
-| Socket.IO     | tRPC (In progress) | GitHub, Loom          |
+### Frontend:
+- React + Vite
+- shadcn/ui (for design)
+- TypeScript
+- Socket.IO client
 
-
-| Layer             | Technology / Tool           | Description                              |
-| ----------------- | --------------------------- | ---------------------------------------- |
-| **Frontend**      | React + Vite                | Modern, fast SPA frontend framework      |
-|                   | shadcn/ui                   | Beautiful and accessible UI components   |
-|                   | Socket.IO Client            | Real-time communication with backend     |
-|                   | Axios                       | HTTP client for API requests             |
-|                   | TypeScript                  | Type-safe frontend development           |
-|                   | JWT Token Handling          | Decoding and storing auth token          |
-|                   | Tailwind CSS (via shadcn)   | Utility-first CSS framework              |
-|                   | Google OAuth2               | Frontend Google sign-in flow             |
-| **Backend**       | Fastify                     | Fast, low-overhead Node.js web framework |
-|                   | OpenAPI + fastify-openapi   | Schema-driven API + automatic docs       |
-|                   | fastify-oauth2              | Google login strategy for Fastify        |
-|                   | Socket.IO Server            | Real-time push updates to client         |
-|                   | fastify-jwt                 | JWT token generation and validation      |
-|                   | Google Cloud Storage SDK    | Uploading and accessing image files      |
-|                   | Google Secret Manager SDK   | Secure secrets handling                  |
-|                   | tRPC (optional integration) | Type-safe backend procedure calls        |
-| **Cloud / Infra** | Google Cloud Storage        | Image file storage                       |
-|                   | Google Cloud Functions      | Serverless image processing logic        |
-|                   | Google Secret Manager       | Manages credentials & config securely    |
-|                   | GitHub                      | Source control and version tracking      |
-|                   | Loom                        | Demo walkthrough recording               |
-
+### Backend:
+- Fastify (with CORS, JWT, Multipart)
+- OpenAPI
+- tRPC (planned integration)
+- Socket.IO
+- Google Cloud Storage
+- Google Secret Manager
+- Google Cloud Functions
 
 ---
 
-# Application Flow
+## 🚀 Running the App Locally
 
-1. **Login** via Google OAuth2
-2. **Upload an image** securely (JWT protected)
-3. Image is saved to **Google Cloud Storage**
-4. A **Cloud Function** triggers to process the image
-5. Real-time **WebSocket status updates** show upload + processing status
+### 1. Clone the repository
 
----
-
-# Setup Instructions
-
-# 1. Clone the Repo
 ```bash
-git clone https://github.com/Poornesh-Muppalam/7Sigma-Full-Stack-Web-Application-Assessment.git
+git clone <repo-url>
 cd 7Sigma-Full-Stack-Web-Application-Assessment
+```
+
+### 2. Install dependencies
+
+```bash
+cd backend
+npm install
+cd ../frontend
+npm install
+```
+
+### 3. Environment Setup
+
+#### `.env` for Backend
+
+```env
+GOOGLE_CLIENT_ID=<your-client-id>
+GOOGLE_CLIENT_SECRET=<your-client-secret>
+JWT_SECRET=<your-jwt-secret>
+GOOGLE_APPLICATION_CREDENTIALS=./gcs-key.json
+GCS_BUCKET_NAME=<your-bucket-name>
+PORT=5001
+```
+
+#### `.env` for Frontend
+
+```env
+VITE_BACKEND_URL=http://localhost:5001
+```
+
+> ⚠️ Do **not** check secrets into GitHub. Use Secret Manager in production.
+
+---
+
+## 🔐 Google Cloud Secret Manager
+
+Secrets like `GOOGLE_CLIENT_SECRET`, `JWT_SECRET`, `GOOGLE_APPLICATION_CREDENTIALS` are stored securely in Secret Manager.
+
+### Setting up:
+
+1. Go to Google Cloud Console → Secret Manager
+2. Click "Create Secret"
+3. Add values for:
+   - `GOOGLE_CLIENT_SECRET`
+   - `JWT_SECRET`
+   - `GOOGLE_APPLICATION_CREDENTIALS` (paste full JSON string)
+
+### Permissions
+
+Give your compute or service account `Secret Manager Secret Accessor` permission under IAM.
+
+---
+
+## 🛠 Google OAuth2 Setup
+
+1. Go to Google Cloud Console → APIs & Services → Credentials
+2. Create OAuth2 Client ID
+3. Authorized redirect URI: `http://localhost:5001/auth/google/callback`
+4. Copy client ID & secret into `.env`
+
+---
+
+## 📦 Google Cloud Functions
+
+### Function: `processImage`
+
+- Trigger: Cloud Storage (upload)
+- Resizes image using `sharp` and saves with `processed_` prefix
+
+```js
+const sharp = require('sharp');
+// Resize logic ...
+```
+
+### Environment Vars (Cloud Function):
+
+- `SOCKET_IO_SERVER_URL=http://your-backend-url`
+- `CLOUD_FUNCTION_JWT=cloud-function-secret`
+
+---
+
+## 📡 WebSocket Events
+
+- `image_status`: Sent by backend to update image upload or processing status.
+- Live UI updates based on events in `Dashboard.tsx`.
+
+---
+
+## 📘 API Architecture
+
+- **OpenAPI**: Backend routes follow OpenAPI specs (auto-documented)
+- **tRPC**: (Planned) For type-safe RPC endpoints
+
+---
+
+## 🖼 UI Features
+
+- Drag & drop (via shadcn/ui)
+- JWT-protected dashboard
+- Profile picture rendering
+- Upload button with real-time progress
+
+---
+
+## ✅ Project Status
+
+### Level 1: MVP – ✅ Completed
+- Google OAuth flow works
+- GCS image upload
+- Cloud Function triggers & processes
+- WebSockets send status
+- Basic frontend UI
+
+### Level 2: Intermediate – 🔄 In Progress
+- Secret Manager (Integrated)
+- OpenAPI spec + tRPC (planned)
+- Polished UI (partially implemented)
+
+---
+
+## 📽 Demo
+
+- Loom Video: [Insert Loom Link]
+- GitHub: [Insert GitHub URL]
+- Deployment: [Optional]
+
+---
+
+## 📄 License
+
+MIT
