@@ -159,8 +159,8 @@ const sharp = require('sharp');
 
 ## 📽 Demo
 
-- Loom Video: [Insert Loom Link]
-- GitHub: [Insert GitHub URL]
+- Loom Video: https://www.loom.com/share/a36637693ffb4958bcbc2c311719d929?sid=4ae5e6d2-76a7-4351-b194-d011e5b5fe74
+- GitHub: https://github.com/Poornesh-Muppalam/7Sigma-Full-Stack-Web-Application-Assessment.git
 - Deployment: [Optional]
 
 ---
